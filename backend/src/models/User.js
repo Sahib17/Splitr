@@ -1,0 +1,70 @@
+import mongoose from "mongoose";
+
+const Schema = mongoose.Schema;
+
+const userSchema = new Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    email: {
+      type: String,
+      trim: true,
+      required: true,
+      unique: true,
+      lowercase: true,
+    },
+    phone: {
+      type: String,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    timeZone: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    defaultCurrency: {
+      type: String,
+      enum: ["USD", "CAD", "EUR", "GBP", "JPY", "INR"],
+      trim: true,
+      required: true,
+    },
+    language: {
+      type: String,
+      enum: ["EN", "HI", "PA", "FR", "ES"],
+      required: true,
+      default: "EN",
+    },
+    blocklist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    owe: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        amount: {
+          type: mongoose.Schema.Types.Decimal128,
+          required: true,
+          default: 0,
+        },
+      },
+    ],
+  },
+  { timestamps: true },
+);
+
+const User = mongoose.model("User", userSchema);
+
+export default User;

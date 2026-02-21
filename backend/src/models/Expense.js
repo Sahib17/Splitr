@@ -1,0 +1,84 @@
+import mongoose from "mongoose";
+
+const Schema = mongoose.Schema;
+
+const expenseSchema = new Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
+    paidBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    comments: [
+      {
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+        content: {
+          type: String,
+          trim: true,
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    members: {
+      type: [
+        {
+          user: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+          },
+          amountOwed: {
+            type: mongoose.Schema.Types.Decimal128,
+            required: true,
+            min: 0,
+          },
+          portion: {
+            type: Number,
+            required: true,
+            min: 0,
+          },
+        },
+      ],
+    },
+    totalAmount: {
+      type: mongoose.Schema.Types.Decimal128,
+      required: true,
+      min: 0,
+    },
+
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      required: true,
+      default: "active",
+    },
+    options: {
+      type: String,
+      enum: ["EQUALLY", "UNEQUALLY", "PERCENTAGE", "SHARES", "ADJUSTMENT"],
+      default: "EQUALLY",
+      required: true,
+    },
+  },
+  { timestamps: true },
+);
+
+const Expense = mongoose.model("Expense", expenseSchema);
+
+export default Expense;
