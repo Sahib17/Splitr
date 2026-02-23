@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 const createGroup = (body) => {
   const { name, type, members } = body;
 
@@ -22,3 +24,5 @@ const createGroup = (body) => {
 export const groupValidator = {
     createGroup,
 }
+
+ZodAny

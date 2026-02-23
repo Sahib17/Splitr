@@ -1,6 +1,3 @@
-const express = require('express');
-const router = express.Router();
-
 // POST   /groups
 // GET    /groups
 // GET    /groups/:groupId
@@ -9,4 +6,25 @@ const router = express.Router();
 // POST   /groups/:groupId/members
 // DELETE /groups/:groupId/members/:userId
 
-export default groupRoutes;
+import express from "express";
+const router = express.Router();
+
+router.post('/', aFunction);
+
+router.get('/', aFunction);
+
+router.get('/:groupId', aFunction);
+
+router.put('/:groupId', aFunction);
+
+router.delete('/:groupId', aFunction);
+
+router.post('/:groupId/members', aFunction);
+
+router.delete('/:groupId/members/:userId', aFunction);
+
+export default router;
+
+function aFunction(){
+
+}

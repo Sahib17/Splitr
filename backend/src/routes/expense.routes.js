@@ -5,4 +5,23 @@
 // DELETE /expenses/:expenseId
 // POST   /expenses/:expenseId/comments
 
-export default expenseRoutes;
+import express from "express";
+const router = express.Router();
+
+router.post('/', aFunction);
+
+router.get('/', aFunction);
+
+router.get('/:expenseId', aFunction);
+
+router.put('/:expenseId', aFunction);
+
+router.delete('/:expenseId', aFunction);
+
+router.post('/:expenseId', aFunction);
+
+export default router;
+
+function aFunction(){
+
+}

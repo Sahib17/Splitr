@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
-import env from "../config/env";
+import env from "../config/env.js";
 
 const hash = async (password) => {
-  return await bcrypt.hash(password, env.SALT_ROUNDS);
+  return await bcrypt.hash(password, 10);
 };
 
 const compare = async (password, hash) => {

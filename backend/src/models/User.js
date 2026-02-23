@@ -15,6 +15,7 @@ const userSchema = new Schema(
       required: true,
       unique: true,
       lowercase: true,
+      index: true,
     },
     phone: {
       type: String,
@@ -28,10 +29,12 @@ const userSchema = new Schema(
       type: String,
       trim: true,
       required: true,
+      default: "UTC"
     },
     defaultCurrency: {
       type: String,
       enum: ["USD", "CAD", "EUR", "GBP", "JPY", "INR"],
+      default: "USD",
       trim: true,
       required: true,
     },
