@@ -15,7 +15,7 @@ router.get('/', aFunction);
 
 router.get('/:groupId', aFunction);
 
-router.put('/:groupId', aFunction);
+router.patch('/:groupId', aFunction);
 
 router.delete('/:groupId', aFunction);
 

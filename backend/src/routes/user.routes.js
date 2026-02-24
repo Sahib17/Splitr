@@ -11,7 +11,7 @@ router.get('/', (req, res)=> {
 // 
 router.get('/:id', aFunction);
 
-router.put('/:id', aFunction);
+router.patch('/:id', aFunction);
 
 router.delete('/:id', aFunction);
 

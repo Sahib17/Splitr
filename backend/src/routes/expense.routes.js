@@ -14,7 +14,7 @@ router.get('/', aFunction);
 
 router.get('/:expenseId', aFunction);
 
-router.put('/:expenseId', aFunction);
+router.patch('/:expenseId', aFunction);
 
 router.delete('/:expenseId', aFunction);
 

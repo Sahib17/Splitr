@@ -3,7 +3,7 @@ import env from "../config/env.js";
 import { z } from "zod";
 
 const auth = (email, userId) => {
-  const token = jwt.sign({ email, userid }, env.JWT_SECRET);
+  const token = jwt.sign({ email, userId }, env.JWT_SECRET);
   return token;
 };
 
@@ -19,4 +19,4 @@ const login = z.object({
     password: z.string().trim().min(5, "Password must be atleast 5 characters"),
 })
 
-export const authValidator = { auth, register };
+export const authValidator = { auth, register, login };

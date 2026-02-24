@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import User from "../models/User.js";
 import { password } from "../utils/password.js";
 
@@ -47,7 +46,22 @@ const login = async (data) => {
   }
 };
 
+const me = async (data) => {
+  try {
+    const user = User.findById(data);
+    return user;
+  } catch (err) {
+    if (err.code === 404) {
+      const error = new Error("User not found");
+      error.statusCode = 404;
+      throw error;
+    }
+    throw err;
+  }
+};
+
 export const authService = {
   register,
   login,
+  me,
 };

@@ -2,7 +2,7 @@ import { logger } from "../config/logger.js";
 import { groupService } from "../services/group.service.js";
 import { groupValidator } from "../validators/group.validator";
 
-export const createGroup = async (req, res) => {
+const createGroup = async (req, res) => {
   try {
     const error = groupValidator.createGroup(req.body);
     if (error) {
@@ -25,3 +25,5 @@ export const createGroup = async (req, res) => {
     });
   }
 };
+
+const groupController = {createGroup}
