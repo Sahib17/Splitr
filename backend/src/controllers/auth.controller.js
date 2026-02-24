@@ -61,8 +61,8 @@ const logout = (req, res) => {
       httpOnly: true,
       secure: false,
       sameSite: "Lax",
+      path: "/",
     })
-    .status(200)
     .json({ success: true, message: "User logged out" });
 };
 

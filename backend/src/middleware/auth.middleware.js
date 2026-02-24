@@ -1,6 +1,11 @@
-import { token } from "../utils/token";
+import { token } from "../utils/token.js";
 
-export const isLoggedIn = (req, res) => {
+/**
+ * This is doc string
+ * how this fubnction works is by returning, userId and email
+ *
+ */
+export const isLoggedIn = (req, res, next) => {
   try {
     const user = token.verify(req.cookies.token);
     if (!user) {
@@ -14,4 +19,8 @@ export const isLoggedIn = (req, res) => {
   } catch (error) {
     return res.status(401).json({ success: false, error: error.message });
   }
+};
+
+export const authMiddleware = {
+  isLoggedIn,
 };

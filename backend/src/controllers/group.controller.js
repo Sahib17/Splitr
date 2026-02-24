@@ -1,6 +1,14 @@
 import { logger } from "../config/logger.js";
 import { groupService } from "../services/group.service.js";
-import { groupValidator } from "../validators/group.validator";
+import { groupValidator } from "../validators/group.validator.js";
+
+// POST   /groups
+// GET    /groups
+// GET    /groups/:groupId
+// PUT    /groups/:groupId
+// DELETE /groups/:groupId
+// POST   /groups/:groupId/members
+// DELETE /groups/:groupId/members/:userId
 
 const createGroup = async (req, res) => {
   try {

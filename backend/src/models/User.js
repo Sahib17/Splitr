@@ -31,16 +31,22 @@ const userSchema = new Schema(
       required: true,
       default: "UTC"
     },
+    status: {
+      type: String,
+      enum: ["ACTIVE", "DELETED", "INACTIVE", "BANNED"],
+      default: "ACTIVE",
+      required: true,
+    },
     defaultCurrency: {
       type: String,
-      enum: ["USD", "CAD", "EUR", "GBP", "JPY", "INR"],
+      enum: ["USD", "CAD", "EUR", "GBP", "JPY", "INR", "NA"],
       default: "USD",
       trim: true,
       required: true,
     },
     language: {
       type: String,
-      enum: ["EN", "HI", "PA", "FR", "ES"],
+      enum: ["EN", "HI", "PA", "FR", "ES", "NA"],
       required: true,
       default: "EN",
     },
