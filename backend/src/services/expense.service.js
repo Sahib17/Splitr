@@ -17,78 +17,82 @@ const deleteExpense = async (req, res) => {};
 
 const postComment = async (req, res) => {};
 
-
-
-const remainder = (remainder, members) => {
-    return members.map((member, index) => {
-        const extra = remainder > 0 ? 1 : 0;
-        if(remainder > 0) remainder--;
-        return {
-            ...member,
-            amountOwed: member.amountOwed + extra
-        }
-    })
-}
+const distributeRemainder = (remainder, members) => {
+  const remaining = remainder;
+  return members.map((member, index) => {
+    const extra = remaining > 0 ? 1 : 0;
+    if (remaining > 0) remaining--;
+    return {
+      ...member,
+      amountOwed: member.amountOwed + extra,
+    };
+  });
+};
 
 const splitWholeAmount = (totalAmount, members) => {
-    const count = members.length;
-    const baseAmount = Math.floor(totalAmount / count);
-    let remainder = totalAmount % count;
-    return members.map((member, index) => {
-        const extra = remainder > 0 ? 1 : 0;
-        if(remainder > 0) remainder--;
-        return {
-            ...member,
-            amountOwed: baseAmount + extra
-        }
-    })
-}
+  const count = members.length;
+  const baseAmount = Math.floor(totalAmount / count);
+  let remainders = totalAmount % count;
+  return members.map((member, index) => {
+    const extra = remainder > 0 ? 1 : 0;
+    if (remainder > 0) remainder--;
+    return {
+      ...member,
+      amountOwed: baseAmount + extra,
+    };
+  });
+};
 
 const calculateSplit = (data) => {
-    switch (data.options) {
-        case "EQUALLY":
-            const count = data.members.length;
-            const baseAmount = Math.floor(totalAmount / count);
-            let remainder = totalAmount % count;
+  switch (data.options) {
+    case "EQUALLY":
+      const count = data.members.length;
+      const baseAmount = Math.floor(totalAmount / count);
+      let remainder = totalAmount % count;
+      const membersWithBase = data.members.map((member) => ({
+        ...member,
+        amountOwed: baseAmount,
+      }));
+      const updatedMembers = distributeRemainder(remainder, membersWithBase);
+      return {
+        ...data,
+        members: updatedMember,
+      };
+      break;
 
-            
-            break;
+    case "UNEQUALLY":
+      const totalAmountOwed = data.members.reduce(
+        (sum, member) => sum + member.amountOwed,
+        0,
+      );
+      if (totalAmountOwed !== data.totalAmount) {
+        const error = new Error("Amounts in UNEQUALLY don't match totalAmount");
+        error.statusCode = 400;
+        throw error;
+      }
+      return {
+        ...data,
+        members: data.members.mao((member) => ({
+          ...member,
+          amountOwed: member.amountOwed,
+        })),
+      };
 
-        case "UNEQUALLY":
-            const totalAmountOwed = data.members.reduce(
-                (sum, member) => sum + member.amountOwed, 0
-            );
-            if(totalAmountOwed !== data.totalAmount){
-                const error = new Error("Amounts in UNEQUALLY don't match totalAmount");
-                error.statusCode = 400;
-                throw error;
-            }
-            return {
-                ...data,
-                members: data.members.mao(member => ({
-                    ...member,
-                    amountOwed: member.amountOwed,
-                }))
-            }
+      break;
 
-            break;
+    case "PERCENTAGE":
+      break;
 
-        case "PERCENTAGE":
+    case "SHARES":
+      break;
 
-            break;
+    case "ADJUSTMENT":
+      break;
 
-        case "SHARES":
-
-            break;
-
-        case "ADJUSTMENT":
-
-            break;
-    
-        default:
-            break;
-    }
-}
+    default:
+      break;
+  }
+};
 
 export const expenseService = {
   postExpense,
