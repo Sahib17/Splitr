@@ -6,7 +6,7 @@ import { userService } from "../services/user.service.js";
 import { userValidator } from "../validators/user.validator.js";
 import { authController } from "./auth.controller.js";
 
-const getUserById = async (req, res) => {
+export const getUserById = async (req, res) => {
   try {
     const user = await userService.getUserById(req.user.userId, req.params.id);
     if (!user) {
@@ -22,7 +22,7 @@ const getUserById = async (req, res) => {
   }
 };
 
-const getUserByMail = async (req, res) => {
+export const getUserByMail = async (req, res) => {
   try {
     const user = await userService.getUserById(req.user.userID, req.params.id);
     if (!user) {
@@ -38,7 +38,7 @@ const getUserByMail = async (req, res) => {
   }
 };
 
-const patchUser = async (req, res) => {
+export const patchUser = async (req, res) => {
   try {
     const result = userValidator.patchUser.safeParse(req.body);
     if (!result.success) {
@@ -57,7 +57,7 @@ const patchUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
   try {
     const user = await userService.deleteUser(req.user.userId);
     if (!user) {
@@ -79,9 +79,9 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export const userController = {
-  getUserById,
-  getUserByMail,
-  patchUser,
-  deleteUser,
-};
+// export const userController = {
+//   getUserById,
+//   getUserByMail,
+//   patchUser,
+//   deleteUser,
+// };

@@ -64,7 +64,7 @@ const userSchema = new Schema(
           required: true,
         },
         amount: {
-          type: mongoose.Schema.Types.Decimal128,
+          type: Number,
           required: true,
           default: 0,
         },

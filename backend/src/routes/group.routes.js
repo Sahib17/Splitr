@@ -7,24 +7,22 @@
 // DELETE /groups/:groupId/members/:userId
 
 import express from "express";
+import { isLoggedIn } from "../middleware/auth.middleware.js";
+import { createGroup, deleteGroup, getGroup, getGroups, patchGroup, postMembers, removeMember } from "../controllers/group.controller.js";
 const router = express.Router();
 
-router.post('/', aFunction);
+router.post('/', isLoggedIn, createGroup);
 
-router.get('/', aFunction);
+router.get('/', isLoggedIn, getGroups);
 
-router.get('/:groupId', aFunction);
+router.get('/:groupId', isLoggedIn, getGroup);
 
-router.patch('/:groupId', aFunction);
+router.patch('/:groupId', isLoggedIn, patchGroup);
 
-router.delete('/:groupId', aFunction);
+router.delete('/:groupId', isLoggedIn, deleteGroup);
 
-router.post('/:groupId/members', aFunction);
+router.post('/:groupId/members', isLoggedIn, postMembers);
 
-router.delete('/:groupId/members/:userId', aFunction);
+router.patch('/:groupId/members/:userId', isLoggedIn, removeMember);
 
 export default router;
-
-function aFunction(){
-
-}

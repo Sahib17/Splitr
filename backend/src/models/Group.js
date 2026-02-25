@@ -26,9 +26,16 @@ const groupSchema = new Schema(
     },
     members: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+        _id: false,
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        amountOwed: {
+          type: Number,
+          default: 0,
+        },
       },
     ],
     expenses: {

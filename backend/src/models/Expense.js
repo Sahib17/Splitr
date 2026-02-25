@@ -45,7 +45,7 @@ const expenseSchema = new Schema(
             required: true,
           },
           amountOwed: {
-            type: mongoose.Schema.Types.Decimal128,
+            type: Number,
             required: true,
             min: 0,
           },
@@ -58,16 +58,16 @@ const expenseSchema = new Schema(
       ],
     },
     totalAmount: {
-      type: mongoose.Schema.Types.Decimal128,
+      type: Number,
       required: true,
       min: 0,
     },
 
     status: {
       type: String,
-      enum: ["active", "inactive"],
+      enum: ["ACTIVE", "INACTIVE"],
       required: true,
-      default: "active",
+      default: "ACTIVE",
     },
     options: {
       type: String,

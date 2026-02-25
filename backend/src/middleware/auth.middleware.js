@@ -1,8 +1,7 @@
 import { token } from "../utils/token.js";
 
 /**
- * This is doc string
- * how this fubnction works is by returning, userId and email
+ * Returns `userId` and `email`
  *
  */
 export const isLoggedIn = (req, res, next) => {
@@ -21,6 +20,6 @@ export const isLoggedIn = (req, res, next) => {
   }
 };
 
-export const authMiddleware = {
-  isLoggedIn,
-};
+// export const authMiddleware = {
+//   isLoggedIn,
+// };

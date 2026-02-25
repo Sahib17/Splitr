@@ -20,9 +20,24 @@ const createGroup = (body) => {
   return null;
 };
 
+const patchGroup = z
+  .object({
+    name: z
+      .string()
+      .trim()
+      .optional()
+      .transform((val) => (val === "" ? undefined : val)),
+    image: z
+      .string()
+      .trim()
+      .optional()
+      .transform((val) => (val === "" ? undefined : val)),
+  })
+  .refine((data) => Object.values(data).some((val) => val !== undefined), {
+    message: "At least one field must be provided",
+  });
 
 export const groupValidator = {
-    createGroup,
-}
-
-ZodAny
+  createGroup,
+  patchGroup,
+};

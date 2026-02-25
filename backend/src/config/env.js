@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET", "SALT_ROUNDS"];
+const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET", "IMGKIT_PUBLIC", "IMGKIT_PRIVATE", "IMGKIT_ENDPOINT"];
 
 requiredEnvVars.forEach((key) => {
   if (!process.env[key]) {
@@ -13,7 +13,9 @@ const env = {
   PORT: process.env.PORT,
   MONGO_URI: process.env.MONGO_URI,
   JWT_SECRET: process.env.JWT_SECRET,
-  SALT_ROUNDS: process.env.SALT_ROUNDS,
+  IMGKIT_PUBLIC: process.env.IMGKIT_PUBLIC,
+  IMGKIT_PRIVATE: process.env.IMGKIT_PRIVATE,
+  IMGKIT_ENDPOINT: process.env.IMGKIT_ENDPOINT,
 };
 
 export default env;
