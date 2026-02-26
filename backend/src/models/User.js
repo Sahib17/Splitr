@@ -24,6 +24,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     timeZone: {
       type: String,
@@ -50,26 +51,37 @@ const userSchema = new Schema(
       required: true,
       default: "EN",
     },
-    blocklist: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    owe: [
+    friends: [
       {
         user: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
           required: true,
+          index: true,
         },
-        amount: {
-          type: Number,
+        status: {
+          type: String,
+          enum: ["ACCEPTED", "PENDING", "BLOCKED"],
           required: true,
-          default: 0,
         },
-      },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        }
+      }
     ],
+    balances: [
+          {
+            user: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "User"
+            },
+            netAmount: {
+              type: Number,
+              default: 0,
+            }
+          }
+        ]
   },
   { timestamps: true },
 );

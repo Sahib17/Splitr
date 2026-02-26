@@ -1,4 +1,5 @@
 import { authService } from "../services/auth.service.js";
+import { sendEmail } from "../services/email.service.js";
 import { password } from "../utils/password.js";
 import { token } from "../utils/token.js";
 import { authValidator } from "../validators/auth.validator.js";
@@ -81,9 +82,21 @@ const me = async (req, res) => {
   }
 };
 
+const sendMail = async (req, res) => {
+  await sendEmail({
+  to: "sharp.sahib@gmail.com",
+  subject: "Expense added",
+  html: "<p>New expense added in Splitr</p>"
+});
+console.log("mail sent");
+res.status(200).json({success: true,})
+
+}
+
 export const authController = {
   register,
   login,
   logout,
-  me
+  me,
+  sendMail,
 };

@@ -46,7 +46,27 @@ const splitWholeAmount = (totalAmount, members) => {
 const calculateSplit = (data) => {
   switch (data.options) {
     case "EQUALLY":
-      const count = data.members.length;
+      return equalSplit(data);
+
+    case "UNEQUALLY":
+      return unequalSplit(data);
+
+    case "PERCENTAGE":
+      return percentageSplit(data);
+
+    case "SHARES":
+    return sharesSplit(data);
+
+    case "ADJUSTMENT":
+      return adjustmentSplit(data);
+
+    default:
+      break;
+  }
+};
+
+const equalSplit = (data) => {
+  const count = data.members.length;
       const baseAmount = Math.floor(totalAmount / count);
       let remainder = totalAmount % count;
       const membersWithBase = data.members.map((member) => ({
@@ -58,10 +78,10 @@ const calculateSplit = (data) => {
         ...data,
         members: updatedMember,
       };
-      break;
+}
 
-    case "UNEQUALLY":
-      const totalAmountOwed = data.members.reduce(
+const unequalSplit = (data) => {
+  const totalAmountOwed = data.members.reduce(
         (sum, member) => sum + member.amountOwed,
         0,
       );
@@ -77,22 +97,19 @@ const calculateSplit = (data) => {
           amountOwed: member.amountOwed,
         })),
       };
+}
 
-      break;
+const percentageSplit = (data) => {
+  
+}
 
-    case "PERCENTAGE":
-      break;
+const sharesSplit = (data) => {
 
-    case "SHARES":
-      break;
+}
 
-    case "ADJUSTMENT":
-      break;
+const adjustmentSplit = (data) => {
 
-    default:
-      break;
-  }
-};
+}
 
 export const expenseService = {
   postExpense,

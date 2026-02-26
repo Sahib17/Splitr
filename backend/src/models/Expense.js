@@ -9,19 +9,35 @@ const expenseSchema = new Schema(
       trim: true,
       required: true,
     },
+    groupId: {
+      type: Schema.Types.ObjectId,
+      ref: "Group",
+      required: true,
+      index: true,
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
       index: true,
     },
-    paidBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    paidBy: [
+      {
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        amount: {
+          type: Number,
+          required: true,
+          min: 0
+        },
+      },
+    ],
     comments: [
       {
+        _id: false,
         user: {
           type: Schema.Types.ObjectId,
           ref: "User",
@@ -49,7 +65,7 @@ const expenseSchema = new Schema(
             required: true,
             min: 0,
           },
-          portion: {
+          weight: {
             type: Number,
             required: true,
             min: 0,
@@ -57,12 +73,6 @@ const expenseSchema = new Schema(
         },
       ],
     },
-    totalAmount: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-
     status: {
       type: String,
       enum: ["ACTIVE", "INACTIVE"],

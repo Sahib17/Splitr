@@ -15,6 +15,8 @@ router.post('/logout', authController.logout);
 
 router.get('/me', authController.me);
 
+router.post('/sendMail', authController.sendMail)
+
 export default router;
 
 function aFunction(){

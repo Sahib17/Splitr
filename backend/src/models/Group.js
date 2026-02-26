@@ -27,26 +27,20 @@ const groupSchema = new Schema(
     members: [
       {
         _id: false,
-        user: {
+      user: {
           type: Schema.Types.ObjectId,
           ref: "User",
+          index: true,
           required: true,
-        },
-        amountOwed: {
-          type: Number,
-          default: 0,
-        },
       },
+      status: {
+        type: String,
+        enum: ["INVITED", "JOINED"],
+        default: "INVITED",
+        required: true,
+      }
+    }
     ],
-    expenses: {
-      type: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Expense",
-        },
-      ],
-      default: [],
-    },
   },
   { timestamps: true },
 );
