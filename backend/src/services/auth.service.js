@@ -25,7 +25,7 @@ const register = async (data) => {
 
 const login = async (data) => {
   try {
-    const user = await User.findOne({ email: data.email });
+    const user = await User.findOne({ email: data.email }).select("+password");;
     if (!user) {
       const error = new Error("Invalid email or password");
       error.statusCode = 401;

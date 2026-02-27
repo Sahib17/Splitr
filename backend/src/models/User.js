@@ -35,7 +35,7 @@ const userSchema = new Schema(
     status: {
       type: String,
       enum: ["ACTIVE", "DELETED", "INACTIVE", "BANNED"],
-      default: "ACTIVE",
+      default: "INACTIVE",
       required: true,
     },
     defaultCurrency: {

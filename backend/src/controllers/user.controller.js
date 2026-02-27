@@ -4,7 +4,6 @@
 
 import { userService } from "../services/user.service.js";
 import { userValidator } from "../validators/user.validator.js";
-import { authController } from "./auth.controller.js";
 
 export const getUserById = async (req, res) => {
   try {

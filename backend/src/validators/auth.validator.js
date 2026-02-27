@@ -16,7 +16,7 @@ const register = z.object({
 
 const login = z.object({
     email: z.email().trim().min(1, "Email is required"),
-    password: z.string().trim().min(5, "Password must be atleast 5 characters"),
+    password: z.string().min(5, "Password must be atleast 5 characters"),
 })
 
 export const authValidator = { auth, register, login };

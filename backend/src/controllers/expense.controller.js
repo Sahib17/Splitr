@@ -10,14 +10,20 @@ import { expenseValidator } from "../validators/expense.validator.js";
 
 export const postExpense = async (req, res) => {
   try {
-    const result = expenseValidator.postExpense(req.body);
+    const result = expenseValidator.postExpense.safeParse(req.body);
+    console.log(result.members);
+    
     if (!result.success) {
       return res
         .status(400)
         .json({ errors: result.error.flatten().fieldErrors });
     }
     const validatedData = result.data;
-    expenseService.calculateSplit(validatedData)
+    const expense = expenseService.calculateSplit(validatedData.paidBy, validatedData.members, validatedData.options)
+
+
+console.log("expense: ", expense);
+return res.status(200).json({success: true, expense})
 
 
 
@@ -30,10 +36,7 @@ export const postExpense = async (req, res) => {
 
 
 
-
-
-
-    const expense = await expenseService.postExpense(req.user.userId);
+    // const expense = await expenseService.postExpense(req.user.userId);
   } catch (error) {
     res
       .status(error.statusCode || 500)

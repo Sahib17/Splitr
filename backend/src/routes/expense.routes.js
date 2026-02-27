@@ -6,9 +6,10 @@
 // POST   /expenses/:expenseId/comments
 
 import express from "express";
+import { postExpense } from "../controllers/expense.controller.js";
 const router = express.Router();
 
-router.post('/', aFunction);
+router.post('/', postExpense);
 
 router.get('/', aFunction);
 
