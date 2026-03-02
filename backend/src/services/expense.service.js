@@ -42,7 +42,7 @@ const calculateSplit = (paidBy, members, options) => {
       return adjustmentSplit(paidBy, members);
 
     default:
-      break;
+      throw new Error("Invalid split option");
   }
 };
 
@@ -150,6 +150,11 @@ const sharesSplit = (paidBy, members) => {
   const totalShares = members.reduce((sum, e) => {
     return sum + e.weight;
   }, 0);
+  if (totalShares <= 1) {
+    const error = new Error("atleast 1 share needed");
+    error.statusCode = 400;
+    throw error;
+  }
   const baseAmount = totalAmount / totalShares;
   const withAmounts = members.map((m) => ({
     ...m,
@@ -183,8 +188,38 @@ const adjustmentSplit = (paidBy, members) => {
     return sum + e.amount;
   }, 0);
   const count = members.length;
-  const baseAmount = Math.floor(totalAmount / count);
-  
+  const totalWeight = members.reduce((sum, e) => {
+    return sum + e.weight;
+  }, 0)
+  if (totalWeight >= totalAmount) {
+    const error = new Error("Weight cannot be bigger than totalAmount");
+    error.statusCode = 400;
+    throw error;
+  }
+  const baseAmount = Math.floor((totalAmount - totalWeight) / count);
+
+  const withAmounts = members.map((m) => ({
+    ...m,
+    amountOwed: baseAmount + m.weight,
+  }))
+  const remainder = totalAmount - withAmounts.reduce((sum, e) => {
+    return sum + e.amountOwed;
+  }, 0);
+  const withOwed = distributeRemainder(remainder, withAmounts);
+  const withPaid = attachPayments(withOwed, paidBy);
+  const withBalance = attachBalances(withPaid);
+  const creditors = withBalance.filter((m) => m.balance > 0);
+  const debtors = withBalance.filter((m) => m.balance < 0);
+
+  // settlements function
+  const settlements = settlement(creditors, debtors);
+
+  return {
+    settlements,
+    creditors,
+    debtors,
+    withBalance,
+  };
 };
 
 export const expenseService = {
