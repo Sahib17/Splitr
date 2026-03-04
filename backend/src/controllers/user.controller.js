@@ -23,7 +23,7 @@ export const getUserById = async (req, res) => {
 
 export const getUserByMail = async (req, res) => {
   try {
-    const user = await userService.getUserById(req.user.userID, req.params.id);
+    const user = await userService.getUserByMail(req.user.userID, req.body.targetMail);
     if (!user) {
       return res
         .status(404)

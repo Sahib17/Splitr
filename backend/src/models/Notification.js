@@ -43,10 +43,6 @@ const notoficationSchema = new Schema(
         type: String,
         enum: ["EXPENSE", "GROUP", "SETTLEMENT"]
     },
-    status: {
-      type: String,
-      enum: ["ACTIVE", "INACTIVE"],
-    },
   },
   { timestamps: true },
 );

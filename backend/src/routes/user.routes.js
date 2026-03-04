@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
 router.get("/:id", isLoggedIn, getUserById);
 
 // GET a user by email
-router.get("/user", isLoggedIn, getUserByMail);
+router.post("/", isLoggedIn, getUserByMail);
 
 // UPDATE logged in user
 router.patch("/", isLoggedIn, patchUser);
