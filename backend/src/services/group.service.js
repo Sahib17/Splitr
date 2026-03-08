@@ -193,8 +193,8 @@ const acceptGroupInvitation = async (userId, groupId) => {
 const rejectGroupInvitation = async (userId, groupId) => {
   try {
     const result = await GroupMember.findOneAndDelete({
-      memberId: userId,
-      groupId: groupId,
+      memberId: new mongoose.Types.ObjectId(userId),
+      groupId: new mongoose.Types.ObjectId(groupId),
       status: "INVITED"
     });
     if(!result){

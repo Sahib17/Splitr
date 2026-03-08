@@ -27,6 +27,6 @@ router.patch('/:groupId/members/:userId', isLoggedIn, removeMember);
 
 router.patch('/:groupId/acceptInvitation', isLoggedIn, acceptGroupInvitation);
 
-router.patch('/:groupId/rejectInvitation', isLoggedIn, rejectGroupInvitation);
+router.delete('/:groupId/rejectInvitation', isLoggedIn, rejectGroupInvitation);
 
 export default router;

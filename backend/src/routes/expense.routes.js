@@ -7,9 +7,10 @@
 
 import express from "express";
 import { postExpense } from "../controllers/expense.controller.js";
+import { isLoggedIn } from "../middleware/auth.middleware.js";
 const router = express.Router();
 
-router.post('/', postExpense);
+router.post('/', isLoggedIn, postExpense);
 
 router.get('/', aFunction);
 

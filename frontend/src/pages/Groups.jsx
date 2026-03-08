@@ -21,7 +21,6 @@ const Groups = () => {
   const joinedGroups = group.filter((g) => g.status === "JOINED");
   return (
     <>
-    <Navbar />
       <div>
         {group.length === 0 ? (
           <p>No groups yet</p>

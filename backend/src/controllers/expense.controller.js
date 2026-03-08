@@ -11,7 +11,7 @@ import { expenseValidator } from "../validators/expense.validator.js";
 export const postExpense = async (req, res) => {
   try {
     const result = expenseValidator.postExpense.safeParse(req.body);
-    console.log(result.members);
+    console.log(req.user);
     
     if (!result.success) {
       return res
@@ -20,7 +20,7 @@ export const postExpense = async (req, res) => {
     }
     const validatedData = result.data;
     const expense = expenseService.calculateSplit(validatedData.paidBy, validatedData.members, validatedData.options)
-
+    const expensed = await expenseService.postExpense(req.user.userId, req.body, result.withBalance);
 
 console.log("expense: ", expense);
 return res.status(200).json({success: true, expense})

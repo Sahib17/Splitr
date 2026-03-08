@@ -5,6 +5,7 @@
 // DELETE /expenses/:expenseId
 // POST   /expenses/:expenseId/comments
 
+import Expense from "../models/Expense.js";
 import {
   attachBalances,
   attachPayments,
@@ -12,7 +13,18 @@ import {
   settlement,
 } from "../utils/expenseUtils.js";
 
-const postExpense = async (req, res) => {};
+const postExpense = async (userId, body, members) => {
+  const result = await Expense.create({
+    name: body.name,
+    groupId: body.groupId,
+    createdBy: userId,
+    paidBy: body.paidBy,
+    ...members,
+    status: "ACTIVE",
+    options,
+  })
+  return result
+};
 
 const getExpenses = async (req, res) => {};
 

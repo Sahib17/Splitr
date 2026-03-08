@@ -13,7 +13,7 @@ const groupSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-    },
+    }, 
     type: {
       type: String,
       enum: ["GROUP", "FRIEND"],
