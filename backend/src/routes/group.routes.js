@@ -8,7 +8,7 @@
 
 import express from "express";
 import { isLoggedIn } from "../middleware/auth.middleware.js";
-import { createGroup, deleteGroup, getGroup, getGroups, patchGroup, postMembers, removeMember } from "../controllers/group.controller.js";
+import { acceptGroupInvitation, createGroup, deleteGroup, getGroup, getGroups, patchGroup, postMembers, rejectGroupInvitation, removeMember } from "../controllers/group.controller.js";
 const router = express.Router();
 
 router.post('/', isLoggedIn, createGroup);
@@ -24,5 +24,9 @@ router.delete('/:groupId', isLoggedIn, deleteGroup);
 router.post('/:groupId/members', isLoggedIn, postMembers);
 
 router.patch('/:groupId/members/:userId', isLoggedIn, removeMember);
+
+router.patch('/:groupId/acceptInvitation', isLoggedIn, acceptGroupInvitation);
+
+router.patch('/:groupId/rejectInvitation', isLoggedIn, rejectGroupInvitation);
 
 export default router;

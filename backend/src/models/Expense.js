@@ -35,23 +35,6 @@ const expenseSchema = new Schema(
         },
       },
     ],
-    comments: [
-      {
-        _id: false,
-        user: {
-          type: Schema.Types.ObjectId,
-          ref: "User",
-        },
-        content: {
-          type: String,
-          trim: true,
-        },
-        createdAt: {
-          type: Date,
-          default: Date.now,
-        },
-      },
-    ],
     members: {
       type: [
         {

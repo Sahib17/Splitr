@@ -4,7 +4,7 @@ import { password } from "../utils/password.js";
 const register = async (data) => {
   try {
     const { name, email, phone, password, defaultCurrency, language } = data;
-    const user = User.create({
+    const user = await User.create({
       name,
       email,
       phone,
@@ -15,9 +15,9 @@ const register = async (data) => {
     return user;
   } catch (error) {
     if (error.code === 11000) {
-      const error = new Error("Email already exists");
-      error.statusCode(400);
-      throw error;
+      const err = new Error("Email already exists");
+      err.statusCode = 400;
+      throw err;
     }
     throw error;
   }

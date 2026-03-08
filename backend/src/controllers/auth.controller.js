@@ -28,7 +28,7 @@ export const register = async (req, res) => {
   } catch (error) {
     return res
       .status(error.statusCode || 500)
-      .json({ error: error.message || "internal server failure" });
+      .json({success: false, message: error.message || "internal server failure" });
   }
 };
 

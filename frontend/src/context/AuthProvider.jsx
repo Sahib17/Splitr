@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { AuthContext } from "./AuthContext"
+axios.defaults.withCredentials = true
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)

@@ -45,10 +45,15 @@ export const getGroups = async (req, res) => {
 
 export const getGroup = async (req, res) => {
   try {
-    const group = await groupService.getGroup(req.user.userId, req.params.groupId);
-    res.status(200).json({success: true, group});
+    const group = await groupService.getGroup(
+      req.user.userId,
+      req.params.groupId,
+    );
+    res.status(200).json({ success: true, data: group });
   } catch (error) {
-    return res.status(error.statusCode || 500).json({success: false, error: error.message})
+    return res
+      .status(error.statusCode || 500)
+      .json({ success: false, error: error.message });
   }
 };
 
@@ -68,35 +73,92 @@ export const patchGroup = async (req, res) => {
     );
     res.status(200).json({ success: true, group });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ success: false, error: error.message });
+    res
+      .status(error.statusCode || 500)
+      .json({ success: false, error: error.message });
   }
 };
 
 export const deleteGroup = async (req, res) => {
-try {
-  const result = await groupService.deleteGroup(req.user.userId, req.params.groupId);
-  return res.status(200).json({success: true, message: "Group deleted successfully"});
-} catch (error) {
-  return res.status(error.statusCode || 500).json({success: false, error: error.message});
-}
-}
+  try {
+    const result = await groupService.deleteGroup(
+      req.user.userId,
+      req.params.groupId,
+    );
+    return res
+      .status(200)
+      .json({ success: true, message: "Group deleted successfully" });
+  } catch (error) {
+    return res
+      .status(error.statusCode || 500)
+      .json({ success: false, error: error.message });
+  }
+};
 
 export const postMembers = async (req, res) => {
   try {
-    const result = await groupService.postMembers(req.user.userId, req.params.groupId, req.body);
-    res.status(200).json({success: true, result})
+    const result = await groupService.postMembers(
+      req.user.userId,
+      req.params.groupId,
+      req.body,
+    );
+    res.status(200).json({ success: true, result });
   } catch (error) {
-    res.status(error.statusCode || 500).json({success: false, error: error.message})
+    res
+      .status(error.statusCode || 500)
+      .json({ success: false, error: error.message });
   }
-}
+};
 
 export const removeMember = async (req, res) => {
   try {
-    const result = await groupService.removeMember(req.user.userId, req.params.userId);
-    res.status(200).json({success: true, result})
+    const result = await groupService.removeMember(
+      req.user.userId,
+      req.params.userId,
+    );
+    res.status(200).json({ success: true, result });
   } catch (error) {
-    res.status(error.statusCode || 500).json({success: false, error: error.message})
+    res
+      .status(error.statusCode || 500)
+      .json({ success: false, error: error.message });
   }
-}
+};
 
-const groupController = { createGroup };
+export const acceptGroupInvitation = async (req, res) => {
+  try {
+    const result = await groupService.acceptGroupInvitation(
+      req.user.userId,
+      req.params.groupId,
+    );
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Group join invitation accepted successfully",
+        data: result,
+      });
+  } catch (error) {
+    res
+      .status(error.statusCode || 500)
+      .json({ success: false, message: error.message || "Server error" });
+  }
+};
+
+export const rejectGroupInvitation = async (req, res) => {
+  try {
+    const result = await groupService.rejectGroupInvitation(
+      req.user.userId,
+      req.params.groupId,
+    );
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Group join invitation rejected successfully",
+      });
+  } catch (error) {
+    res
+      .status(error.statusCode || 500)
+      .json({ success: false, message: error.message || "Server error" });
+  }
+};

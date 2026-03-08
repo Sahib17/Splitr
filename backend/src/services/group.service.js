@@ -1,7 +1,9 @@
+import mongoose from "mongoose";
 import { logger } from "../config/logger.js";
 import Expense from "../models/Expense.js";
 import Group from "../models/Group.js";
 import User from "../models/User.js";
+import GroupMember from "../models/GroupMember.js";
 
 // / POST   /groups
 // / GET    /groups
@@ -12,21 +14,43 @@ import User from "../models/User.js";
 // DELETE /groups/:groupId/members/:userId
 
 const createGroup = async (userId, body) => {
-  console.log(body);
-
-  const members = [...new Set([userId, ...body.members])].map((memberId) => ({
-    user: memberId,
-  }));
+  const session = await mongoose.startSession();
   try {
-    const group = await Group.create({
-      createdBy: userId,
-      name: body.name,
-      type: body.type,
-      image: body.image,
-      members,
+    session.startTransaction();
+    const memberIds = body.members;
+    const count = await User.countDocuments({
+      _id: { $in: memberIds },
+      status: "ACTIVE",
     });
-    return group;
+    if (count !== memberIds.length) {
+      const error = new Error("Invalid members in request");
+      error.statusCode = 401;
+      throw error;
+    }
+    const [group] = await Group.create(
+      [
+        {
+          name: body.name,
+          createdBy: userId,
+          type: body.type,
+          image: body.image,
+        },
+      ],
+      { session },
+    );
+    const members = [...new Set([userId, ...body.members])].map((memberId) => ({
+      groupId: group._id,
+      memberId,
+      status: memberId.toString() == userId.toString() ? "JOINED" : "INVITED",
+      role: memberId.toString() == userId.toString() ? "ADMIN" : "MEMBER",
+    }));
+    const groupMember = await GroupMember.insertMany(members, { session });
+    await session.commitTransaction();
+    session.endSession();
+    return (group, groupMember);
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     logger.error(error);
     throw error;
   }
@@ -34,7 +58,9 @@ const createGroup = async (userId, body) => {
 
 const getGroups = async (userId) => {
   try {
-    const groups = await Group.find({ "members.user": userId }).lean();
+    const groups = await GroupMember.find({ memberId: userId }).populate(
+      "groupId",
+    );
     return groups;
   } catch (error) {
     logger.error(error);
@@ -139,6 +165,49 @@ const removeMember = async (userId, groupId, targetId) => {
   }
 };
 
+const acceptGroupInvitation = async (userId, groupId) => {
+  try {
+    console.log(typeof groupId, groupId)
+    console.log(userId, groupId);
+    
+    const result = await GroupMember.findOneAndUpdate({
+      memberId: new mongoose.Types.ObjectId(userId),
+      groupId: new mongoose.Types.ObjectId(groupId),
+      status: "INVITED"
+    }, {
+      status: "JOINED"
+    }, {runValidators: true, returnDocument: "after"});
+    if(!result){
+      const error = new Error("Invitation not found or already joined");
+      error.statusCode = 400;
+      throw error;
+    }
+    console.log(result);
+    
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+const rejectGroupInvitation = async (userId, groupId) => {
+  try {
+    const result = await GroupMember.findOneAndDelete({
+      memberId: userId,
+      groupId: groupId,
+      status: "INVITED"
+    });
+    if(!result){
+      const error = new Error("Invitation not found or already joined");
+      error.statusCode = 400;
+      throw error;
+    }
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const groupService = {
   createGroup,
   getGroups,
@@ -147,4 +216,6 @@ export const groupService = {
   deleteGroup,
   postMembers,
   removeMember,
+  acceptGroupInvitation,
+  rejectGroupInvitation,
 };

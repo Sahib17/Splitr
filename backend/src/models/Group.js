@@ -24,23 +24,23 @@ const groupSchema = new Schema(
       trim: true,
       required: false,
     },
-    members: [
-      {
-        _id: false,
-      user: {
-          type: Schema.Types.ObjectId,
-          ref: "User",
-          index: true,
-          required: true,
-      },
-      status: {
-        type: String,
-        enum: ["INVITED", "JOINED"],
-        default: "INVITED",
-        required: true,
-      }
-    }
-    ],
+    // members: [
+    //   {
+    //     _id: false,
+    //   user: {
+    //       type: Schema.Types.ObjectId,
+    //       ref: "User",
+    //       index: true,
+    //       required: true,
+    //   },
+    //   status: {
+    //     type: String,
+    //     enum: ["INVITED", "JOINED"],
+    //     default: "INVITED",
+    //     required: true,
+    //   }
+    // }
+    // ],
   },
   { timestamps: true },
 );
