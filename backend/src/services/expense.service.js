@@ -31,7 +31,7 @@ const postExpense = async (userId, body, members) => {
   return result
 };
 
-const getGroupExpenses = async (userId, groupid) => {};
+
 
 const getExpense = async (userId) => {
   try {
@@ -299,6 +299,6 @@ export const expenseService = {
   deleteExpense,
   postComment,
   calculateSplit,
-  Gsettlement
+  Gsettlement,
 };
 

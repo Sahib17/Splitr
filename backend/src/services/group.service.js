@@ -105,6 +105,53 @@ const patchGroup = async (userId, groupId, body) => {
   }
 };
 
+const getGroupMembers = async (userId, groupId) => {
+  try {
+    const isMember = await GroupMember.find({groupId, memberId: userId, status: "JOINED"});
+    if(isMember.length === 0){
+      const error = new Error("Unauthorized");
+      error.statusCode = 401;
+      throw error;
+    }
+    const members = await GroupMember.find({groupId: groupId, status: {$in: ["JOINED", "INVITED"]}});
+    if(!members){
+      const error = new Error("No members found, add some");
+      error.statusCode = 404;
+      throw error;
+    }
+    return members;
+  } catch (error) {
+    logger.error(error);
+      throw error;
+  }
+}
+
+const getGroupExpenses = async (userId, groupId) => {
+  try {
+    // check member if he is a part of the group
+    const isMember = await GroupMember.findOne({groupId, memberId: userId, status: "JOINED"});
+    if(isMember.length === 0){
+      const error = new Error("Unauthorized");
+      error.statusCode = 401;
+      throw error;
+    }
+
+    // get members of the group
+    const members = await GroupMember.find({groupId: groupId, status: "JOINED"});
+    if(!members){
+      const error = new Error("No members found, add some");
+      error.statusCode = 404;
+      throw error;
+    }
+    // await session.commitTransaction();
+    return members;
+   } catch (error) {
+      // await session.abortTransaction();
+      logger.error(error);
+      throw error;
+    }
+};
+
 const deleteGroup = async (userId, groupId) => {
   const session = await mongoose.startSession();
   try {
@@ -252,4 +299,6 @@ export const groupService = {
   removeMember,
   acceptGroupInvitation,
   rejectGroupInvitation,
+  getGroupExpenses,
+  getGroupMembers,
 };

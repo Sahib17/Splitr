@@ -1,10 +1,12 @@
 import { logger } from "../config/logger.js";
 import { groupService } from "../services/group.service.js";
+import { idValidate } from "../validators/common.validator.js";
 import { groupValidator } from "../validators/group.validator.js";
 
 // \ POST     /groups
 // \ GET      /groups
 // \ GET      /groups/:groupId
+// \ GET      /groups/:groupId/expenses
 // \ PATCH    /groups/:groupId
 // \ DELETE   /groups/:groupId
 // \ POST     /groups/:groupId/members
@@ -35,6 +37,42 @@ export const createGroup = async (req, res) => {
     });
   }
 };
+
+export const getGroupExpenses = async (req, res) => {
+  try {
+    // const id = req.params.groupId;
+    // const validate = idValidate.safeParse(id);
+    // if (!validate.success) {
+    //   return res
+    //     .status(400)
+    //     .json({ success: false, message: validate.error.issues[0].message });
+    // }
+    // console.log(validate);
+    
+    const data = await groupService.getGroupExpenses(req.user.userId, req.params.groupId)
+    res.status(200).json({success: true, message: "Expenses found", data: data})
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({success: false, message: error.message || "Server error"})
+  }
+}
+
+export const getGroupMembers = async (req, res) => {
+  try {
+    // const id = req.params.groupId;
+    // const validate = idValidate.safeParse(id);
+    // if (!validate.success) {
+    //   return res
+    //     .status(400)
+    //     .json({ success: false, message: validate.error.issues[0].message });
+    // }
+    // console.log(validate);
+    
+    const data = await groupService.getGroupMembers(req.user.userId, req.params.groupId)
+    res.status(200).json({success: true, message: "Members found", data: data})
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({success: false, message: error.message || "Server error"})
+  }
+}
 
 export const getGroups = async (req, res) => {
   try {

@@ -7,3 +7,7 @@ export const objectId = z
     message: "Invalid ObjectId",
   })
   .transform((val) => new mongoose.Types.ObjectId(val));
+
+export const idValidate = z.object({
+  id: objectId,
+});

@@ -1,11 +1,12 @@
 // POST     /expenses
-// GET      /expenses
+// GET      /expenses/
 // GET      /expenses/:expenseId
 // PATCH    /expenses/:expenseId
 // DELETE   /expenses/:expenseId
 // POST     /expenses/:expenseId/comments
 
 import { expenseService } from "../services/expense.service.js";
+import { idValidate } from "../validators/common.validator.js";
 import { expenseValidator } from "../validators/expense.validator.js";
 
 export const postExpense = async (req, res) => {
@@ -56,4 +57,5 @@ export const deleteExpense = async (req, res) => {
   }
   
 }
+
 
